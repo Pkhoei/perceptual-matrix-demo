@@ -193,6 +193,20 @@ st.caption("Soundwalk Research Pilot v0.10")
 st.button("New Participant", on_click=new_participant)
 
 st.subheader("1. Listening & Sound Events")
+
+st.markdown("**Listen to a Recording (optional)**")
+audio_files = sorted((APP_DIR / "audio").glob("*.wav"))
+if audio_files:
+    selected_audio = st.selectbox(
+        "Choose a sound",
+        range(len(audio_files)),
+        format_func=lambda i: f"Sound {i + 1:03d}",
+        key="selected_audio",
+    )
+    st.audio(audio_files[selected_audio].read_bytes(), format="audio/wav")
+else:
+    st.info("No WAV recordings found in the audio folder.")
+
 walk_col, person_col = st.columns(2)
 with walk_col:
     soundwalk_id = st.text_input("Soundwalk ID *", placeholder="SW001", key="soundwalk_id")
